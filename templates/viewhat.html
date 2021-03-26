@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+  <head>
+    <title>QuackDex - edit: {{hat.title}}</title>
+  </head>
+  <body style="background-position-x: left; background-repeat: no-repeat; background-image: url({{url_for('static', filename='content/album.png')}});">
+
+
+    <div style=" left: 300px; top: 80px; position: fixed;" >
+     <b>{{hat.title}}</b><br>
+     By: {{man}}<br>
+      <img src='{{ url_for("GetImg", id=hat.id) }}'><br>
+      <a href="/gethatfile/{{hat.id}}">Download</a>
+
+      <div style="zoom: 4 ;  width:fit-content; position: absolute;left: 85px; top: 10px; background-color: saddlebrown; ">
+        <div style="position: absolute; top:20px; left: 20px;  transform:rotateZ(30deg) perspective(20px) rotateX(62deg) scaleY(0.34) scaleX(0.18);  ">
+          <img  src='{{ url_for("GetImg", id=hat.id) }}'  alt="...." style="position: absolute; top: 12px; left: -90px;   clip: rect(0px,96px,32px,64px);  
+        " /><!--capel-->
+        </div>
+
+        <div style="position: absolute; top:20px; left: 52px;  transform:perspective(20px) rotateX(65deg) scaleY(0.3) scaleX(0.23);  ">
+          <img  src='{{ url_for("GetImg", id=hat.id) }}'  alt="...." style="position: absolute; top: 12px; left: -90px;   clip: rect(0px,96px,32px,64px);  
+        " /><!--caper-->
+        </div>
+
+        <img  src='{{ url_for("static",filename="content/displayducks.png")}}' style="position: absolute; top: 0px; left: 0px;"/>
+
+       <img  src='{{ url_for("GetImg", id=hat.id) }}'  alt=":(" style="position: absolute; top: 0; left: 0; clip: rect(0px,95.8px,32px,0px);" /> <!--main hat-->
+
+       
+
+        <img  src='{{ url_for("static",filename="content/wing.png")}}' style="position: absolute; top: 0px; left: 0px; "/>
+
+        <img  src='{{ url_for("static",filename="content/plat.png")}}' style="position: absolute; top: 20px; left: -8px; "/>
+
+        <img  src='{{ url_for("GetImg", id=hat.id) }}'  alt="...." style="position: absolute; top: -23px; left: 96px;   clip: rect(32.5px,24px,56px,0px);" /><!--rock-->
+
+      </div>
+
+
+
+    <form style=" position: absolute; top: 110px; left:-40px; border-radius: 25px;
+    border: 5px darkred ;
+    border-style:dotted;
+    padding: 20px; margin: 30px;"  action= '{{url_for("EditHat", id=hat.id)}}' method="post" enctype="multipart/form-data">
+ 
+      <span ><b>Edit:</b></span><br>
+      <hr>
+      <span>Passcode:</span>
+      <input type="text"name="passcode" placeholder="tonyhawksunderground" ><br>
+      <hr style="border-top: dotted 1px; margin-bottom: 0;" />
+
+      <div style="float: left; width: 45%; margin-top: 10%; ">
+      <span>Title:</span><br>
+      <input type="text"name="newname" placeholder="new hat name" style="width: 80%;"><br>
+      <input type="submit" name="action" value="Change">
+     </div>
+     <span style=" display: inline-block;
+     border-left: 1px solid;
+     margin: 0 2px;
+     height: 125px; border-left-style: dotted;"></span>
+      <div style="float: right;  width: 45%; margin-top: 10%;">
+      <span>Remove Hat:</span><br>
+      <input type="submit" name="action" value="Remove">
+    </div>
+
+    </form>
+  </div>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<link rel="shortcut icon" href="{{ url_for('static', filename='content/favicon.png') }}">
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<html style="overflow-y: hidden; font-size: 12; font-family: monospace;"  >
+  <head>
+    {%if m%}
+    <title>Page: {{p}} QuackDex - {{m}}</title>
+    {%else%}
+    <title>Page: {{p}} QuackDex | Welcome!</title>
+    {%endif%}
+  </head>
+  
+<body style="zoom:1.1; background-color: rgb(239, 178, 178);  background-image: url({{url_for('static', filename='content/duckChannelBackground.png')}});" >
+  
+    <div style=" color: white;  outline-width: 2px; border-style: outset; border-color: rgb(132, 0, 0);background-color: rgb(240, 49, 49); left:0.5%; right:0.5%; top: 1%;">
+      <header style="white-space: nowrap; margin: 2px; font-size:0.8vw;" >
+        {{topMsg|safe}}
+      </header>
+      <hr>
+      <form action= {{to}} method="post" enctype="multipart/form-data">
+
+       <div style="padding: 2px;"> <span style="margin-left: 5px; ">Hat:</span>
+          <input type="file" name="hat[]" accept=".hat" multiple = true style="height: 16px; left: 120px; position: fixed;"></div>
+
+          <div class="g-recaptcha" style="float:right; padding-right: 40%; transform:scale(0.7);" data-sitekey="6LdOBv8ZAAAAAALtfm6v1AUmwmtUwo_wuIBg8YN7"></div>
+          <div style="padding: 2px;"> <span style="margin: 2px;">User Name:</span>
+          <input type="text"name="author"placeholder="Jhon Mallard" {%if usrNcode[0]%}value='{{usrNcode[0]}}'{%endif%}  style="height: 12px; left: 120px; position: fixed;"></div>
+          
+          <div style="padding: 2px;"></div> <span style="margin: 2px;">Passcode:</span>
+          <input type="text"name="pass"placeholder="orangecrush2006" {%if usrNcode[1]%}value='{{usrNcode[1]}}'{%endif%} style="left: 120px; position: fixed;height: 12px;"><br>
+          <input type="submit" value="Submit " style="margin:5px; height: 23px;"> <span><b>{%if m%} {{m}}{%endif%}</b></span>
+
+        </div>
+      </form>
+    </div>
+     
+    <div style=" z-index: -2;color: rgb(132, 71, 0);overflow-y:auto; overflow-x: hidden; padding: 5px; right: 1%; left:1%; position: fixed; bottom: 0; top: 130px;" >
+      <br> 
+      {% for hat in hats%}
+
+        <div style=" padding: 5px; width:100%; display: table;  background-color: rgb(240, 152, 49); outline-style:outset; border-color: rgb(132, 71, 0);">
+
+            <div style="all: revert; float:left; width:fit-content;" >
+              <header><b>{{hat.title}}</b> (hat#{{hat.id-1}})</header>
+
+            <span>Author:</span> <a href=' {{ url_for("Hat", search=Babe.query.filter_by(id=hat.author_id).first().name) }}'  target="popup"> <b>{{Babe.query.filter_by(id=hat.author_id).first().name}}</b></a>  (<i>user#{{hat.author_id-1}}</i>)
+
+              <span>| Added: {{hat.date_posted.strftime("%Y-%m-%d")}}</span><br>
+              <a href=' {{ url_for("GetFile", id=hat.id) }}'  target="popup">Wear Hat</a><span> ✰{{hat.downloads}} downloads |</span>
+              <a href=' {{ url_for("GetHatInfo", id=hat.id) }}'  target="popup">View+</a>
+            </div>
+            
+            <div style=" position: relative; left: calc(170px + 30%);  width:min-content;">
+
+        
+              <div style="position: absolute; top:20px; left: 20px;  transform:rotateZ(30deg) perspective(20px) rotateX(62deg) scaleY(0.34) scaleX(0.18);  ">
+                <img  src='{{ url_for("GetImg", id=hat.id) }}'  alt="...." style="position: absolute; top: 12px; left: -90px;   clip: rect(0px,96px,32px,64px);  
+              " /><!--capel-->
+              </div>
+
+              <div style="position: absolute; top:20px; left: 52px;  transform:perspective(20px) rotateX(65deg) scaleY(0.3) scaleX(0.23);  ">
+                <img  src='{{ url_for("GetImg", id=hat.id) }}'  alt="...." style="position: absolute; top: 12px; left: -90px;   clip: rect(0px,96px,32px,64px);  
+              " /><!--caper-->
+              </div>
+
+              <img  src='{{ url_for("static",filename="content/displayducks.png")}}' style="position: absolute; top: 0px; left: 0px;"/>
+
+             <img  src='{{ url_for("GetImg", id=hat.id) }}'  alt=":(" style="position: absolute; top: 0; left: 0; clip: rect(0px,95.8px,32px,0px);" /> <!--main hat-->
+
+              <img  src='{{ url_for("GetImg", id=hat.id) }}'  alt="...." style="position: absolute; top: -16px; left: 96px;   clip: rect(32.5px,24px,56px,0px)" /><!--rock-->
+
+              <img  src='{{ url_for("static",filename="content/wing.png")}}' style="position: absolute; top: 0px; left: 0px; "/>
+          
+            </div>
+        </div>
+      {%endfor%}
+    </div>
+    <div style="  padding: 8px; color: white;background-color: rgb(49, 162, 242); outline-width: 2px; border-style: outset; border-color: rgb(0, 87, 137);   position:fixed; bottom: 1%; right: 0.5%; ">
+      <form action="/hats" method="get">
+        <div style="padding: 2px; background-position-y: bottom;">
+          Page:   {%if first%}<a href={{first}}>⟬</a>{%endif%}    {%if tol%}<a href={{tol}}>◀</a>{%else%}|{%endif%}{{p}}{%if tor%}<a href={{tor}}>▶</a>{%else%}|{%endif%}       {%if last%}<a href={{last}}>⟭</a>{%endif%}      <br></br>
+        </div>
+        Search: 
+        <input type="text"name="search"placeholder="pepe" {%if search%}value="{{search}}{%endif%}" ></input>
+        <input type="submit" value="Submit"></input> | <a href={{clear}} style=" background-color: rgb(178, 220, 239); border-color: white; border-width: 2px; border-style: solid; color: rgb(0, 87, 137); text-decoration: none;">Clear Search</a><br></br></input>
+
+        <label><input type="radio" id="t" name="sort" value="t" {%if sort == 't'%}checked="checked"{%endif%}  >Time </input></label>
+        <label> <input type="radio" id="l" name="sort" value="l" {%if sort == 'l'%}checked="checked"{%endif%}  >Downloads</input> </label>
+        <label>  <input type="radio" id="a" name="sort" value="a" {%if sort == 'a'%}checked="checked"{%endif%}  >ABC</input></label>
+        <label>   <input type="radio" id="r" name="sort" value="r" {%if sort == 'r'%}checked="checked"{%endif%} >Rando</input></label>
+        | 
+        <input type="checkbox" name="order"  {%if desc%}checked="checked"{%endif%} />Deccending</input>
+      </form>
+    </div>
+  </body>
+  <script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script>
+</html>
